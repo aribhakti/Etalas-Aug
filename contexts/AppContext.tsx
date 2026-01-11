@@ -40,9 +40,34 @@ const translations: Record<string, Record<Language, string>> = {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
-  // Default to light mode
-  const [theme, setTheme] = useState<Theme>('light');
+  // Initialize state from localStorage if available, otherwise default
+  const [language, setLanguageState] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('etalas-lang');
+      return (saved === 'en' || saved === 'id') ? saved : 'en';
+    }
+    return 'en';
+  });
+
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('etalas-theme');
+      return (saved === 'dark' || saved === 'light') ? saved : 'light';
+    }
+    return 'light';
+  });
+
+  // Persist Language
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('etalas-lang', lang);
+  };
+
+  // Persist Theme & Apply Class
+  const setTheme = (t: Theme) => {
+    setThemeState(t);
+    localStorage.setItem('etalas-theme', t);
+  };
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -54,7 +79,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   const t = (key: string): string => {

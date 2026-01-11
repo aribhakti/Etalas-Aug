@@ -1,10 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './Button';
 import { getTeamRecommendation } from '../services/geminiService';
 import { TeamRecommendation } from '../types';
 import { Sparkles, Cpu, Clock, Bot, AlertCircle } from 'lucide-react';
 import { ScrollReveal } from './ScrollReveal';
 import { ParallaxTitle } from './ParallaxTitle';
+
+// Helper component for typewriter effect
+const TypewriterText: React.FC<{ text: string }> = ({ text }) => {
+  const [displayedText, setDisplayedText] = useState('');
+
+  useEffect(() => {
+    let index = 0;
+    setDisplayedText(''); // Reset on new text
+    
+    // Faster typing speed (20ms) for better UX on longer texts
+    const intervalId = setInterval(() => {
+      if (index < text.length - 1) {
+        setDisplayedText((prev) => prev + text[index]);
+        index++;
+      } else {
+        clearInterval(intervalId);
+      }
+    }, 20);
+
+    return () => clearInterval(intervalId);
+  }, [text]);
+
+  return <span>{displayedText}</span>;
+};
 
 export const AIConsultant: React.FC = () => {
   const [prompt, setPrompt] = useState('');
@@ -104,11 +128,13 @@ export const AIConsultant: React.FC = () => {
                        <div className="flex flex-col md:flex-row gap-10">
                           <div className="flex-1">
                              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Executive Summary</h3>
-                             <p className="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">{recommendation.summary}</p>
+                             <p className="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+                                <TypewriterText text={recommendation.summary} />
+                             </p>
                              
                              <div className="flex flex-wrap gap-2 mb-6">
                                 {recommendation.technologies.map((tech, idx) => (
-                                  <span key={idx} className="px-3 py-1 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white text-sm font-medium border border-slate-200 dark:border-white/5">
+                                  <span key={idx} className="px-3 py-1 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white text-sm font-medium border border-slate-200 dark:border-white/5 animate-fade-in" style={{ animationDelay: `${idx * 100}ms` }}>
                                     {tech}
                                   </span>
                                 ))}
@@ -127,7 +153,7 @@ export const AIConsultant: React.FC = () => {
                              </h3>
                              <div className="space-y-4">
                                 {recommendation.roles.map((role, idx) => (
-                                   <div key={idx} className="bg-slate-50 dark:bg-white/5 p-4 rounded-xl border border-slate-200 dark:border-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
+                                   <div key={idx} className="bg-slate-50 dark:bg-white/5 p-4 rounded-xl border border-slate-200 dark:border-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors animate-fade-in" style={{ animationDelay: `${500 + (idx * 100)}ms` }}>
                                       <div className="flex justify-between items-center mb-1">
                                          <h4 className="font-bold text-slate-900 dark:text-white">{role.title}</h4>
                                          <span className="bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded font-bold">x{role.count}</span>

@@ -92,6 +92,9 @@ export const Blog: React.FC = () => {
                           alt={post.title} 
                           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                           loading="lazy"
+                          decoding="async"
+                          width="800"
+                          height="600"
                         />
                         <div className="absolute top-4 left-4 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide text-slate-900 dark:text-white">
                           {post.category}
@@ -149,7 +152,13 @@ export const Blog: React.FC = () => {
             </button>
             
             <div className="h-64 sm:h-80 w-full relative">
-               <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-full object-cover" />
+               <img 
+                 src={selectedPost.image} 
+                 alt={selectedPost.title} 
+                 className="w-full h-full object-cover" 
+                 width="800"
+                 height="600"
+               />
                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
                <div className="absolute bottom-6 left-6 md:left-10 text-white">
                   <div className="inline-block bg-etalas-cyan px-3 py-1 rounded-full text-xs font-bold uppercase mb-3">

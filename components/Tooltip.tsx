@@ -3,14 +3,15 @@ import React, { useState } from 'react';
 interface TooltipProps {
   content: string;
   children: React.ReactNode;
+  className?: string;
 }
 
-export const Tooltip: React.FC<TooltipProps> = ({ content, children }) => {
+export const Tooltip: React.FC<TooltipProps> = ({ content, children, className = "" }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
     <div 
-      className="relative inline-block"
+      className={`relative inline-block ${className}`}
       onMouseEnter={() => setIsVisible(true)}
       onMouseLeave={() => setIsVisible(false)}
       onFocus={() => setIsVisible(true)}

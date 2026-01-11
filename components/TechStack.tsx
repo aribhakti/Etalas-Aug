@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Code2, Database, Smartphone, Cloud, Brain, Search, X } from 'lucide-react';
 import { Tooltip } from './Tooltip';
 import { ScrollReveal } from './ScrollReveal';
@@ -30,6 +30,43 @@ const TOOLTIP_DATA: Record<string, string> = {
   'Python': 'A high-level programming language known for its readability and versatility.',
   'AWS': 'Amazon Web Services offers reliable, scalable, and inexpensive cloud computing services.',
   'Docker': 'A set of platform as a service products that use OS-level virtualization.',
+};
+
+// Internal Spotlight Card Component
+const SpotlightCard = ({ children, className = "" }: { children?: React.ReactNode; className?: string }) => {
+  const divRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!divRef.current) return;
+    const rect = divRef.current.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  const handleMouseEnter = () => setOpacity(1);
+  const handleMouseLeave = () => setOpacity(0);
+
+  return (
+    <div
+      ref={divRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={`relative overflow-hidden rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 transition-all duration-300 ${className}`}
+    >
+      <div
+        className="pointer-events-none absolute -inset-px transition duration-300 z-0"
+        style={{
+          opacity,
+          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(124, 58, 237, 0.15), transparent 40%)`,
+        }}
+      />
+      <div className="relative z-10 h-full">
+        {children}
+      </div>
+    </div>
+  );
 };
 
 export const TechStack: React.FC = () => {
@@ -134,15 +171,14 @@ export const TechStack: React.FC = () => {
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                       {filteredTechnologies.map((tech, idx) => (
                         <div key={`${tech}-${idx}`} className="animate-fade-in" style={{ animationDelay: `${idx * 30}ms` }}>
-                          <Tooltip content={TOOLTIP_DATA[tech] || `${tech} - Expert developers available.`}>
-                            <div 
-                              className="group relative flex items-center justify-center p-6 bg-white dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-etalas-cyan/50 dark:hover:border-etalas-teal/50 hover:shadow-xl hover:-translate-y-1 transition-all cursor-default h-32 w-full overflow-hidden"
-                            >
-                              <div className="absolute inset-0 bg-gradient-to-br from-etalas-cyan/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                              <span className="relative z-10 text-slate-700 dark:text-slate-200 font-medium text-center text-sm group-hover:font-bold transition-all">
-                                {tech}
-                              </span>
-                            </div>
+                          <Tooltip className="w-full block h-full" content={TOOLTIP_DATA[tech] || `${tech} - Expert developers available.`}>
+                            <SpotlightCard className="h-32 w-full group cursor-default">
+                                <div className="absolute inset-0 flex items-center justify-center p-6">
+                                  <span className="text-slate-700 dark:text-slate-200 font-medium text-center text-sm group-hover:font-bold transition-all relative z-20">
+                                    {tech}
+                                  </span>
+                                </div>
+                            </SpotlightCard>
                           </Tooltip>
                         </div>
                       ))}

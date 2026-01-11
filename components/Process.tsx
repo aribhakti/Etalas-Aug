@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Search, PenTool, Users, Rocket, Check } from 'lucide-react';
 import { ScrollReveal } from './ScrollReveal';
 import { ParallaxTitle } from './ParallaxTitle';
@@ -35,6 +35,32 @@ const steps = [
 ];
 
 export const Process: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [progressHeight, setProgressHeight] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      
+      const rect = containerRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const elementHeight = rect.height;
+      
+      // Calculate how much of the element has been scrolled past
+      // Start filling when the top of the element hits the middle of the screen
+      const startOffset = windowHeight / 2;
+      const relativeY = startOffset - rect.top;
+      
+      const progress = Math.min(Math.max(relativeY / elementHeight, 0), 1);
+      setProgressHeight(progress * 100);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <section id="process" className="py-24 md:py-32 bg-slate-50 dark:bg-etalas-gray/20 relative overflow-hidden transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,9 +88,15 @@ export const Process: React.FC = () => {
 
           {/* Right Column: Vertical Steps */}
           <div className="lg:col-span-7">
-             <div className="relative">
-                {/* Vertical Line */}
+             <div className="relative" ref={containerRef}>
+                {/* Background Line */}
                 <div className="absolute left-6 top-6 bottom-6 w-0.5 bg-slate-200 dark:bg-white/10 hidden md:block"></div>
+                
+                {/* Active Progress Line */}
+                <div 
+                   className="absolute left-6 top-6 w-0.5 bg-gradient-to-b from-etalas-cyan to-etalas-teal hidden md:block transition-all duration-100 ease-out"
+                   style={{ height: `calc(${progressHeight}% - 24px)`, maxHeight: 'calc(100% - 48px)' }}
+                ></div>
 
                 <div className="space-y-12">
                    {steps.map((step, idx) => (
@@ -72,7 +104,14 @@ export const Process: React.FC = () => {
                          <div className="relative flex flex-col md:flex-row gap-8">
                             {/* Icon Marker */}
                             <div className="flex-shrink-0 z-10">
-                               <div className="w-12 h-12 rounded-full bg-etalas-cyan text-white flex items-center justify-center shadow-lg shadow-etalas-cyan/30 ring-4 ring-slate-50 dark:ring-etalas-dark transition-transform duration-300 hover:scale-110">
+                               <div 
+                                 className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg ring-4 ring-slate-50 dark:ring-etalas-dark transition-all duration-500 ${
+                                    // Highlight icon when line passes it (roughly)
+                                    (progressHeight > (idx / steps.length) * 100) 
+                                       ? 'bg-etalas-cyan text-white scale-110 shadow-etalas-cyan/40' 
+                                       : 'bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                                 }`}
+                               >
                                   {step.icon}
                                </div>
                             </div>
@@ -83,7 +122,7 @@ export const Process: React.FC = () => {
                                <p className="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
                                   {step.desc}
                                </p>
-                               <div className="bg-white dark:bg-white/5 rounded-xl p-4 border border-slate-100 dark:border-white/5">
+                               <div className="bg-white dark:bg-white/5 rounded-xl p-4 border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-md transition-shadow">
                                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                      {step.items.map((item, i) => (
                                         <li key={i} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 font-medium">

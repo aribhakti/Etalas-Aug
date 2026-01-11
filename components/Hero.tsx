@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Button } from './Button';
 import { ArrowRight, Users, CheckCircle, Sparkles } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
@@ -6,8 +6,8 @@ import { ScrollReveal } from './ScrollReveal';
 
 export const Hero: React.FC = () => {
   const { t } = useApp();
-  const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
+  const cardContainerRef = useRef<HTMLDivElement>(null);
   
   const titlePrefix = t('hero.title.prefix').split(' ');
   const titleSuffix = t('hero.title.suffix').split(' ');
@@ -18,24 +18,33 @@ export const Hero: React.FC = () => {
   ];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const card = cardRef.current;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    if (!cardRef.current || !cardContainerRef.current) return;
     
-    // Calculate rotation (-10 to 10 degrees)
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const rotateX = ((y - centerY) / centerY) * -10;
-    const rotateY = ((x - centerX) / centerX) * 10;
-    
-    setRotate({ x: rotateX, y: rotateY });
+    // Use requestAnimationFrame to decouple event firing from DOM updates
+    requestAnimationFrame(() => {
+        const card = cardContainerRef.current;
+        if (!card) return;
+        
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+        
+        if (cardRef.current) {
+            cardRef.current.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        }
+    });
   };
 
   const handleMouseLeave = () => {
-    setRotate({ x: 0, y: 0 });
+    if (cardRef.current) {
+        cardRef.current.style.transform = `rotateX(0deg) rotateY(0deg)`;
+    }
   };
 
   return (
@@ -108,74 +117,77 @@ export const Hero: React.FC = () => {
           <div className="flex-1 relative w-full max-w-lg lg:max-w-none hidden md:block perspective-1000">
              <ScrollReveal delay={300} className="w-full h-full flex items-center justify-center">
                <div 
-                 ref={cardRef}
+                 ref={cardContainerRef}
                  onMouseMove={handleMouseMove}
                  onMouseLeave={handleMouseLeave}
-                 className="relative z-10 preserve-3d transition-transform duration-100 ease-out"
-                 style={{
-                    transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`
-                 }}
+                 className="relative z-10 w-full" // Added w-full to ensure hit area
                >
-                 {/* Main Card */}
-                 <div className="bg-white/90 dark:bg-slate-800/80 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-3xl p-8 shadow-2xl transform transition-all duration-300">
-                    <div className="flex items-start justify-between mb-8">
-                       <div className="flex items-center gap-4">
-                          <img 
-                            src="https://picsum.photos/200/200?random=10" 
-                            className="w-16 h-16 rounded-2xl object-cover shadow-md" 
-                            alt="Profile" 
-                            width="64"
-                            height="64"
-                            // Performance: Eager load LCP image
-                            loading="eager"
-                            decoding="async"
-                          />
-                          <div>
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white">David Chen</h3>
-                            <p className="text-etalas-cyan dark:text-etalas-teal font-medium">Senior Full Stack Developer</p>
-                          </div>
-                       </div>
-                       <span className="px-3 py-1 bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide rounded-full border border-green-500/20 animate-pulse">
-                          Available
-                       </span>
-                    </div>
-                    
-                    <div className="space-y-4 mb-8">
-                      <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-default">
-                        <span className="text-sm text-slate-500 dark:text-slate-400">Experience</span>
-                        <span className="text-sm font-bold text-slate-900 dark:text-white">8+ Years</span>
-                      </div>
-                      <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-default">
-                        <span className="text-sm text-slate-500 dark:text-slate-400">Stack</span>
-                        <span className="text-sm font-bold text-slate-900 dark:text-white">React, Node.js, AWS</span>
-                      </div>
-                      <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-default">
-                        <span className="text-sm text-slate-500 dark:text-slate-400">English</span>
-                        <span className="text-sm font-bold text-slate-900 dark:text-white">C1 Advanced</span>
-                      </div>
+                 <div
+                    ref={cardRef}
+                    className="preserve-3d transition-transform duration-100 ease-out"
+                    style={{ transformStyle: 'preserve-3d' }}
+                 >
+                    {/* Main Card */}
+                    <div className="bg-white/90 dark:bg-slate-800/80 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-3xl p-8 shadow-2xl transform transition-all duration-300">
+                        <div className="flex items-start justify-between mb-8">
+                        <div className="flex items-center gap-4">
+                            <img 
+                                src="https://picsum.photos/200/200?random=10" 
+                                className="w-16 h-16 rounded-2xl object-cover shadow-md" 
+                                alt="David Chen - Senior Full Stack Developer" 
+                                width="64"
+                                height="64"
+                                // Performance: Eager load LCP image
+                                loading="eager"
+                                decoding="async"
+                            />
+                            <div>
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-white">David Chen</h3>
+                                <p className="text-etalas-cyan dark:text-etalas-teal font-medium">Senior Full Stack Developer</p>
+                            </div>
+                        </div>
+                        <span className="px-3 py-1 bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wide rounded-full border border-green-500/20 animate-pulse">
+                            Available
+                        </span>
+                        </div>
+                        
+                        <div className="space-y-4 mb-8">
+                        <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-default">
+                            <span className="text-sm text-slate-500 dark:text-slate-400">Experience</span>
+                            <span className="text-sm font-bold text-slate-900 dark:text-white">8+ Years</span>
+                        </div>
+                        <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-default">
+                            <span className="text-sm text-slate-500 dark:text-slate-400">Stack</span>
+                            <span className="text-sm font-bold text-slate-900 dark:text-white">React, Node.js, AWS</span>
+                        </div>
+                        <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-default">
+                            <span className="text-sm text-slate-500 dark:text-slate-400">English</span>
+                            <span className="text-sm font-bold text-slate-900 dark:text-white">C1 Advanced</span>
+                        </div>
+                        </div>
+
+                        <div className="flex gap-2 flex-wrap">
+                        {['React', 'Next.js', 'PostgreSQL', 'TypeScript'].map(tech => (
+                            <span key={tech} className="px-3 py-1.5 bg-slate-100 dark:bg-white/5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/5 hover:border-etalas-cyan/50 dark:hover:border-etalas-teal/50 transition-colors cursor-default">
+                            {tech}
+                            </span>
+                        ))}
+                        </div>
                     </div>
 
-                    <div className="flex gap-2 flex-wrap">
-                       {['React', 'Next.js', 'PostgreSQL', 'TypeScript'].map(tech => (
-                         <span key={tech} className="px-3 py-1.5 bg-slate-100 dark:bg-white/5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/5 hover:border-etalas-cyan/50 dark:hover:border-etalas-teal/50 transition-colors cursor-default">
-                           {tech}
-                         </span>
-                       ))}
+                    {/* Floating Metric Card - With 3D transform effect */}
+                    <div 
+                        className="absolute -left-12 bottom-12 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xl flex items-center gap-4 animate-bounce duration-[3000ms] z-20 max-w-xs"
+                        style={{ transform: 'translateZ(40px)' }}
+                    >
+                        <div className="w-12 h-12 rounded-xl bg-etalas-cyan text-white flex items-center justify-center shadow-lg shadow-etalas-cyan/30">
+                            <Users size={24} />
+                        </div>
+                        <div>
+                            <div className="text-2xl font-bold text-slate-900 dark:text-white">48h</div>
+                            <div className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wide">Avg. Hiring Time</div>
+                        </div>
                     </div>
-                 </div>
-
-                 {/* Floating Metric Card - With 3D transform effect */}
-                 <div 
-                    className="absolute -left-12 bottom-12 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xl flex items-center gap-4 animate-bounce duration-[3000ms] z-20 max-w-xs"
-                    style={{ transform: 'translateZ(40px)' }}
-                  >
-                     <div className="w-12 h-12 rounded-xl bg-etalas-cyan text-white flex items-center justify-center shadow-lg shadow-etalas-cyan/30">
-                        <Users size={24} />
-                     </div>
-                     <div>
-                        <div className="text-2xl font-bold text-slate-900 dark:text-white">48h</div>
-                        <div className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wide">Avg. Hiring Time</div>
-                     </div>
                  </div>
                </div>
              </ScrollReveal>

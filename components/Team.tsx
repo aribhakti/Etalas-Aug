@@ -91,6 +91,9 @@ export const Team: React.FC = () => {
                           alt={founder.name} 
                           className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                           loading="lazy"
+                          decoding="async"
+                          width="96"
+                          height="96"
                         />
                       </div>
                       
@@ -131,6 +134,9 @@ export const Team: React.FC = () => {
                                alt={member.name} 
                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
                                loading="lazy"
+                               decoding="async"
+                               width="56"
+                               height="56"
                             />
                          </div>
                          <div className="w-full">

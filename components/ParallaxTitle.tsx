@@ -15,16 +15,25 @@ export const ParallaxTitle: React.FC<ParallaxTitleProps> = ({
 }) => {
   const elementRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>();
+  const isVisibleRef = useRef(false);
 
   useEffect(() => {
+    // Optimization: Only run animation loop when element is in viewport
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisibleRef.current = entry.isIntersecting;
+    }, { threshold: 0, rootMargin: '100px' });
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
     const animate = () => {
       if (!elementRef.current) return;
       
-      const rect = elementRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      // Optimization: only animate if visible or close to visible
-      if (rect.top < windowHeight + 100 && rect.bottom > -100) {
+      if (isVisibleRef.current) {
+        const rect = elementRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
         const elementCenter = rect.top + rect.height / 2;
         const viewportCenter = windowHeight / 2;
         const distanceFromCenter = viewportCenter - elementCenter;
@@ -45,6 +54,8 @@ export const ParallaxTitle: React.FC<ParallaxTitleProps> = ({
     requestRef.current = requestAnimationFrame(animate);
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      if (elementRef.current) observer.unobserve(elementRef.current);
+      observer.disconnect();
     };
   }, [velocity, direction]);
 
