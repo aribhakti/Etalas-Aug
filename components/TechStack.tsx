@@ -3,6 +3,7 @@ import { Code2, Database, Smartphone, Cloud, Brain, Search, X } from 'lucide-rea
 import { Tooltip } from './Tooltip';
 import { ScrollReveal } from './ScrollReveal';
 import { ParallaxTitle } from './ParallaxTitle';
+import { useApp } from '../contexts/AppContext';
 
 const technologies: Record<string, string[]> = {
   frontend: ['React.js', 'Angular', 'Vue.js', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Redux', 'Svelte', 'Three.js'],
@@ -73,6 +74,7 @@ const SpotlightCard = ({ children, className = "" }: { children?: React.ReactNod
 export const TechStack: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>('frontend');
+  const { t } = useApp();
 
   const filteredTechnologies = useMemo(() => {
     let techs: string[] = [];
@@ -115,8 +117,8 @@ export const TechStack: React.FC = () => {
                 </p>
                 <div className="hidden lg:block w-20 h-1 bg-etalas-cyan dark:bg-etalas-teal rounded-full mb-10"></div>
 
-                {/* Vertical Category Menu for Desktop / Horizontal for Mobile */}
-                <div className="flex flex-row lg:flex-col flex-wrap gap-2 mb-8" role="tablist" aria-label="Technology Categories">
+                {/* Vertical Category Menu for Desktop / Horizontal Scroll for Mobile */}
+                <div className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 gap-2 mb-8 no-scrollbar" role="tablist" aria-label="Technology Categories">
                   {Object.keys(technologies).map((category) => (
                     <button
                         key={category}
@@ -126,7 +128,7 @@ export const TechStack: React.FC = () => {
                             setActiveCategory(category);
                             setSearchTerm('');
                         }}
-                        className={`group flex items-center justify-between px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300 border w-full text-left ${
+                        className={`group flex-shrink-0 flex items-center justify-between px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300 border lg:w-full text-left whitespace-nowrap lg:whitespace-normal ${
                             activeCategory === category
                                 ? 'bg-etalas-cyan text-white border-etalas-cyan shadow-lg shadow-etalas-cyan/25'
                                 : 'bg-slate-50 dark:bg-white/5 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-white/10 hover:border-etalas-cyan dark:hover:border-etalas-teal hover:text-etalas-cyan dark:hover:text-etalas-teal'
@@ -158,7 +160,7 @@ export const TechStack: React.FC = () => {
                     type="text"
                     aria-label="Search technologies"
                     className="block w-full pl-12 pr-10 py-4 border border-slate-200 dark:border-white/10 rounded-2xl leading-5 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-etalas-cyan focus:border-transparent transition-all shadow-sm"
-                    placeholder={`Search ${activeCategory ? getDisplayName(activeCategory) + ' ' : ''}technology...`}
+                    placeholder={`${t('ui.search')} ${activeCategory ? getDisplayName(activeCategory) : ''}`}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />

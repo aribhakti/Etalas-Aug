@@ -2,35 +2,50 @@ import React from 'react';
 import { DollarSign, Clock, Shield, Zap, ArrowRight } from 'lucide-react';
 import { ScrollReveal } from './ScrollReveal';
 import { ParallaxTitle } from './ParallaxTitle';
-
-const benefits = [
-  {
-    icon: <DollarSign size={24} />,
-    title: "Cost Efficiency",
-    desc: "Save up to 40% compared to local hiring without sacrificing quality. Optimize budget without cutting corners.",
-    color: "from-green-400 to-emerald-600"
-  },
-  {
-    icon: <Clock size={24} />,
-    title: "Timezone Aligned",
-    desc: "Seamless overlap with US, UK, and Australian business hours. Real-time collaboration, just like they're down the hall.",
-    color: "from-blue-400 to-indigo-600"
-  },
-  {
-    icon: <Zap size={24} />,
-    title: "Fast Scaling",
-    desc: "Skip the 60-day hiring cycle. Start building in days, not months. Pre-vetted engineers ready to deploy.",
-    color: "from-yellow-400 to-orange-600"
-  },
-  {
-    icon: <Shield size={24} />,
-    title: "IP Protection",
-    desc: "Strict NDAs and compliance standards ensure your code is safe. International security protocols and data privacy.",
-    color: "from-purple-400 to-pink-600"
-  }
-];
+import { useApp } from '../contexts/AppContext';
 
 export const Benefits: React.FC = () => {
+  const { language, t } = useApp();
+
+  const benefits = [
+    {
+      icon: <DollarSign size={24} />,
+      title: { en: "Cost Efficiency", id: "Efisiensi Biaya" },
+      desc: { 
+        en: "Save up to 40% compared to local hiring without sacrificing quality. Optimize budget without cutting corners.",
+        id: "Hemat hingga 40% dibandingkan perekrutan lokal tanpa mengorbankan kualitas. Optimalkan anggaran tanpa mengurangi standar."
+      },
+      color: "from-green-400 to-emerald-600"
+    },
+    {
+      icon: <Clock size={24} />,
+      title: { en: "Timezone Aligned", id: "Zona Waktu Selaras" },
+      desc: {
+        en: "Seamless overlap with US, UK, and Australian business hours. Real-time collaboration, just like they're down the hall.",
+        id: "Overlap yang mulus dengan jam kerja AS, Inggris, dan Australia. Kolaborasi real-time, seperti mereka ada di ruangan sebelah."
+      },
+      color: "from-blue-400 to-indigo-600"
+    },
+    {
+      icon: <Zap size={24} />,
+      title: { en: "Fast Scaling", id: "Penskalaan Cepat" },
+      desc: {
+        en: "Skip the 60-day hiring cycle. Start building in days, not months. Pre-vetted engineers ready to deploy.",
+        id: "Lewati siklus perekrutan 60 hari. Mulai membangun dalam hitungan hari, bukan bulan. Insinyur yang telah divalidasi siap diterjunkan."
+      },
+      color: "from-yellow-400 to-orange-600"
+    },
+    {
+      icon: <Shield size={24} />,
+      title: { en: "IP Protection", id: "Perlindungan IP" },
+      desc: {
+        en: "Strict NDAs and compliance standards ensure your code is safe. International security protocols and data privacy.",
+        id: "NDA ketat dan standar kepatuhan memastikan kode Anda aman. Protokol keamanan internasional dan privasi data."
+      },
+      color: "from-purple-400 to-pink-600"
+    }
+  ];
+
   return (
     <section className="py-24 md:py-32 bg-slate-900 relative">
       {/* Abstract Background Shapes */}
@@ -46,14 +61,14 @@ export const Benefits: React.FC = () => {
           <div className="lg:col-span-5">
              <div className="lg:sticky lg:top-32">
                 <ScrollReveal>
-                  <span className="text-etalas-teal font-bold tracking-widest text-sm uppercase mb-4 block">Why Choose Etalas</span>
+                  <span className="text-etalas-teal font-bold tracking-widest text-sm uppercase mb-4 block">{t('benefits.label')}</span>
                   <ParallaxTitle velocity={-0.05} direction="y">
                     <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-8 tracking-tight leading-tight">
-                      Engineered for <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-etalas-cyan to-etalas-teal">Performance</span>
+                      {t('benefits.title').split(' ')[0]} <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-etalas-cyan to-etalas-teal">{t('benefits.title').split(' ').slice(1).join(' ')}</span>
                     </h2>
                   </ParallaxTitle>
                   <p className="text-lg text-slate-400 leading-relaxed mb-8">
-                    We've refined the remote engagement model to eliminate friction and maximize output. It's not just outsourcing; it's a partnership.
+                    {t('benefits.desc')}
                   </p>
                   <div className="hidden lg:block w-20 h-1 bg-etalas-cyan rounded-full"></div>
                 </ScrollReveal>
@@ -76,15 +91,15 @@ export const Benefits: React.FC = () => {
                         </div>
                         
                         <h3 className="text-xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-300 transition-colors">
-                          {benefit.title}
+                          {benefit.title[language]}
                         </h3>
                         
                         <p className="text-slate-400 leading-relaxed mb-6 text-sm flex-1">
-                          {benefit.desc}
+                          {benefit.desc[language]}
                         </p>
 
                         <div className="mt-auto flex items-center text-xs font-bold text-white opacity-0 transform translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                          <span className="mr-2">Learn more</span>
+                          <span className="mr-2">{t('ui.readMore')}</span>
                           <ArrowRight size={14} />
                         </div>
                       </div>

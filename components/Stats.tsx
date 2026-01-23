@@ -1,35 +1,38 @@
 import React from 'react';
 import { ScrollReveal } from './ScrollReveal';
 import { Users, Clock, Globe, Award } from 'lucide-react';
-
-const stats = [
-  {
-    label: "Active Developers",
-    value: "300+",
-    icon: <Users className="w-5 h-5" />,
-    desc: "Top 1% Talent"
-  },
-  {
-    label: "Retention Rate",
-    value: "98%",
-    icon: <Award className="w-5 h-5" />,
-    desc: "Long-term Scale"
-  },
-  {
-    label: "Hiring Speed",
-    value: "48h",
-    icon: <Clock className="w-5 h-5" />,
-    desc: "Request to Interview"
-  },
-  {
-    label: "Global Reach",
-    value: "15+",
-    icon: <Globe className="w-5 h-5" />,
-    desc: "Countries Served"
-  }
-];
+import { useApp } from '../contexts/AppContext';
 
 export const Stats: React.FC = () => {
+  const { t } = useApp();
+
+  const stats = [
+    {
+      label: t('stats.active'),
+      value: "300+",
+      icon: <Users className="w-5 h-5" />,
+      desc: "Top 1% Talent"
+    },
+    {
+      label: t('stats.retention'),
+      value: "98%",
+      icon: <Award className="w-5 h-5" />,
+      desc: "Long-term Scale"
+    },
+    {
+      label: t('stats.speed'),
+      value: "48h",
+      icon: <Clock className="w-5 h-5" />,
+      desc: "Request to Interview"
+    },
+    {
+      label: t('stats.reach'),
+      value: "15+",
+      icon: <Globe className="w-5 h-5" />,
+      desc: t('stats.countries')
+    }
+  ];
+
   return (
     <section className="py-16 bg-white dark:bg-etalas-dark border-b border-slate-100 dark:border-white/5 relative z-10 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

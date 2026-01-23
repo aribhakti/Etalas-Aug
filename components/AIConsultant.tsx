@@ -5,6 +5,7 @@ import { TeamRecommendation } from '../types';
 import { Sparkles, Cpu, Clock, Bot, AlertCircle } from 'lucide-react';
 import { ScrollReveal } from './ScrollReveal';
 import { ParallaxTitle } from './ParallaxTitle';
+import { useApp } from '../contexts/AppContext';
 
 // Helper component for typewriter effect
 const TypewriterText: React.FC<{ text: string }> = ({ text }) => {
@@ -35,6 +36,7 @@ export const AIConsultant: React.FC = () => {
   const [recommendation, setRecommendation] = useState<TeamRecommendation | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { t } = useApp();
 
   const handleConsult = async () => {
     if (!prompt.trim()) {
@@ -78,11 +80,11 @@ export const AIConsultant: React.FC = () => {
                   </div>
                   <ParallaxTitle velocity={-0.05} direction="y">
                     <h2 className="text-4xl md:text-6xl font-extrabold text-slate-900 dark:text-white mb-8 tracking-tight leading-tight">
-                      Not sure who <br/> you need? <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-400 dark:to-pink-400">Ask Gemini.</span>
+                      {t('ai.title').split(' ').slice(0, 3).join(' ')} <br/> {t('ai.title').split(' ').slice(3).join(' ')} <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-400 dark:to-pink-400">{t('ai.subtitle')}</span>
                     </h2>
                   </ParallaxTitle>
                   <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed mb-8">
-                    Describe your project, and our AI will instantly architect your ideal team structure, suggesting roles and technologies.
+                    {t('ai.desc')}
                   </p>
                   <div className="hidden lg:block w-20 h-1 bg-purple-500 rounded-full"></div>
                 </ScrollReveal>
@@ -98,11 +100,11 @@ export const AIConsultant: React.FC = () => {
                       <textarea
                         value={prompt}
                         onChange={(e) => setPrompt(e.target.value)}
-                        placeholder="e.g., I need to build a scalable fintech mobile app with real-time trading features. We have a backend in Python but need a new frontend and mobile app."
-                        className="w-full bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-2xl p-6 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all resize-none h-40 text-lg leading-relaxed shadow-inner"
+                        placeholder={t('ai.placeholder')}
+                        className="w-full bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-2xl p-6 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all resize-none h-40 text-lg leading-relaxed shadow-inner pb-16" // Added extra padding bottom for mobile button
                         aria-label="Project Description Input"
                       />
-                      <div className="absolute bottom-4 right-4">
+                      <div className="absolute bottom-4 right-4 z-10">
                          <Button 
                             onClick={handleConsult} 
                             isLoading={loading} 
@@ -110,7 +112,7 @@ export const AIConsultant: React.FC = () => {
                             aria-label="Analyze Needs with AI"
                           >
                            <Sparkles size={18} className="mr-2 text-yellow-300" />
-                           Analyze Needs
+                           {t('ai.analyze')}
                          </Button>
                       </div>
                     </div>
@@ -127,7 +129,7 @@ export const AIConsultant: React.FC = () => {
                     <div className="mt-8 animate-fade-in-up bg-white dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 p-6 md:p-8 shadow-sm">
                        <div className="flex flex-col md:flex-row gap-10">
                           <div className="flex-1">
-                             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Executive Summary</h3>
+                             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">{t('ai.summary')}</h3>
                              <p className="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
                                 <TypewriterText text={recommendation.summary} />
                              </p>
@@ -142,14 +144,14 @@ export const AIConsultant: React.FC = () => {
                              
                              <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                                 <Clock size={16} />
-                                Estimated Assembly Time: <span className="text-slate-900 dark:text-white font-semibold">{recommendation.estimatedTimeline}</span>
+                                {t('ai.time')}: <span className="text-slate-900 dark:text-white font-semibold">{recommendation.estimatedTimeline}</span>
                              </div>
                           </div>
 
                           <div className="flex-1 border-t md:border-t-0 md:border-l border-slate-200 dark:border-white/10 pt-8 md:pt-0 md:pl-10">
                              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                                 <Cpu size={20} className="text-purple-600 dark:text-purple-400" />
-                                Recommended Roles
+                                {t('ai.roles')}
                              </h3>
                              <div className="space-y-4">
                                 {recommendation.roles.map((role, idx) => (

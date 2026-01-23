@@ -2,32 +2,49 @@ import React, { useState } from 'react';
 import { ScrollReveal } from './ScrollReveal';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ParallaxTitle } from './ParallaxTitle';
-
-const faqs = [
-  {
-    question: "How rigorously do you vet your developers?",
-    answer: "Extremely. Only top 1% pass our process. We conduct 4 stages: Resume Screening, Coding Challenge (Algorithm & Data Structures), Live Technical Interview with a Senior Engineer, and a Soft Skills/English Proficiency check. You only see candidates who have passed all four."
-  },
-  {
-    question: "What if the developer isn't the right fit?",
-    answer: "We offer a 2-week risk-free trial. If you're not satisfied within the first 14 days, you pay nothing, and we'll immediately replace the developer with a better match at no extra cost."
-  },
-  {
-    question: "How fast can I start?",
-    answer: "Typically, we can present you with shortlisted candidates within 24-48 hours. Once you select a developer, they can usually start onboarding within 2-3 business days."
-  },
-  {
-    question: "Do you handle payroll and legal compliance?",
-    answer: "Yes. You sign a contract with our US or Indonesian entity. We handle all local labor laws, taxes, benefits, and equipment for the developers. You just receive one simple monthly invoice."
-  },
-  {
-    question: "Are the developers working in my timezone?",
-    answer: "We have developers across Southeast Asia who are accustomed to working shifted hours to overlap with US (EST/PST), UK, and Australian timezones. We ensure at least 4 hours of overlap for synchronous collaboration."
-  }
-];
+import { useApp } from '../contexts/AppContext';
 
 export const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const { language, t } = useApp();
+
+  const faqs = [
+    {
+      question: { en: "How rigorously do you vet your developers?", id: "Seberapa ketat Anda menyeleksi developer?" },
+      answer: {
+        en: "Extremely. Only top 1% pass our process. We conduct 4 stages: Resume Screening, Coding Challenge (Algorithm & Data Structures), Live Technical Interview with a Senior Engineer, and a Soft Skills/English Proficiency check. You only see candidates who have passed all four.",
+        id: "Sangat ketat. Hanya 1% teratas yang lolos. Kami melakukan 4 tahap: Screening Resume, Tes Coding (Algoritma & Struktur Data), Wawancara Teknis Langsung dengan Senior Engineer, dan Cek Soft Skills/Bahasa Inggris."
+      }
+    },
+    {
+      question: { en: "What if the developer isn't the right fit?", id: "Bagaimana jika developer tidak cocok?" },
+      answer: {
+        en: "We offer a 2-week risk-free trial. If you're not satisfied within the first 14 days, you pay nothing, and we'll immediately replace the developer with a better match at no extra cost.",
+        id: "Kami menawarkan uji coba bebas risiko selama 2 minggu. Jika Anda tidak puas dalam 14 hari pertama, Anda tidak membayar apa pun, dan kami akan segera mengganti developer tersebut."
+      }
+    },
+    {
+      question: { en: "How fast can I start?", id: "Seberapa cepat saya bisa mulai?" },
+      answer: {
+        en: "Typically, we can present you with shortlisted candidates within 24-48 hours. Once you select a developer, they can usually start onboarding within 2-3 business days.",
+        id: "Biasanya, kami dapat menyajikan kandidat terpilih dalam 24-48 jam. Setelah Anda memilih developer, mereka biasanya dapat mulai onboarding dalam 2-3 hari kerja."
+      }
+    },
+    {
+      question: { en: "Do you handle payroll and legal compliance?", id: "Apakah Anda menangani penggajian dan kepatuhan hukum?" },
+      answer: {
+        en: "Yes. You sign a contract with our US or Indonesian entity. We handle all local labor laws, taxes, benefits, and equipment for the developers. You just receive one simple monthly invoice.",
+        id: "Ya. Anda menandatangani kontrak dengan entitas AS atau Indonesia kami. Kami menangani semua hukum ketenagakerjaan lokal, pajak, tunjangan, dan peralatan. Anda hanya menerima satu faktur bulanan yang sederhana."
+      }
+    },
+    {
+      question: { en: "Are the developers working in my timezone?", id: "Apakah developer bekerja di zona waktu saya?" },
+      answer: {
+        en: "We have developers across Southeast Asia who are accustomed to working shifted hours to overlap with US (EST/PST), UK, and Australian timezones. We ensure at least 4 hours of overlap for synchronous collaboration.",
+        id: "Kami memiliki developer di seluruh Asia Tenggara yang terbiasa bekerja dengan jam kerja yang disesuaikan untuk overlap dengan zona waktu AS, Inggris, dan Australia. Kami memastikan setidaknya 4 jam overlap untuk kolaborasi sinkron."
+      }
+    }
+  ];
 
   return (
     <section className="py-24 md:py-32 bg-white dark:bg-etalas-dark transition-colors duration-300">
@@ -40,11 +57,11 @@ export const FAQ: React.FC = () => {
                 <ScrollReveal>
                   <ParallaxTitle velocity={-0.05} direction="y">
                     <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6">
-                      Common <br/> Questions
+                      {t('faq.title').split(' ')[0]} <br/> {t('faq.title').split(' ').slice(1).join(' ')}
                     </h2>
                   </ParallaxTitle>
                   <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Everything you need to know about building your remote team. Can't find the answer? Contact us directly.
+                    {t('faq.desc')}
                   </p>
                 </ScrollReveal>
               </div>
@@ -67,7 +84,7 @@ export const FAQ: React.FC = () => {
                         className="w-full px-6 py-6 flex items-center justify-between text-left focus:outline-none"
                       >
                         <span className={`text-lg font-bold transition-colors ${openIndex === idx ? 'text-etalas-cyan dark:text-etalas-teal' : 'text-slate-900 dark:text-white'}`}>
-                          {faq.question}
+                          {faq.question[language]}
                         </span>
                         {openIndex === idx ? (
                           <ChevronUp className="text-etalas-cyan dark:text-etalas-teal" />
@@ -82,7 +99,7 @@ export const FAQ: React.FC = () => {
                         }`}
                       >
                         <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                          {faq.answer}
+                          {faq.answer[language]}
                         </p>
                       </div>
                     </div>
