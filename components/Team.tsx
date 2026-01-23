@@ -88,7 +88,7 @@ export const Team: React.FC = () => {
                       <div className="w-24 h-24 rounded-2xl bg-slate-100 dark:bg-white/10 overflow-hidden shadow-inner flex-shrink-0 mb-4">
                         <img 
                           src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${founder.name}&backgroundColor=transparent`} 
-                          alt={founder.name} 
+                          alt={`${founder.name} - ${founder.role}`}
                           className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                           loading="lazy"
                           decoding="async"
@@ -131,7 +131,7 @@ export const Team: React.FC = () => {
                          <div className="w-14 h-14 rounded-xl bg-slate-100 dark:bg-white/10 overflow-hidden mb-3">
                             <img 
                                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}&backgroundColor=transparent`} 
-                               alt={member.name} 
+                               alt={`${member.name} - ${member.role}`}
                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
                                loading="lazy"
                                decoding="async"

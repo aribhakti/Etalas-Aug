@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { Code2, Database, Smartphone, Cloud, Brain, Search, X } from 'lucide-react';
 import { Tooltip } from './Tooltip';
 import { ScrollReveal } from './ScrollReveal';
@@ -32,34 +32,35 @@ const TOOLTIP_DATA: Record<string, string> = {
   'Docker': 'A set of platform as a service products that use OS-level virtualization.',
 };
 
-// Internal Spotlight Card Component
+// Internal Spotlight Card Component - Optimized to avoid Re-renders
 const SpotlightCard = ({ children, className = "" }: { children?: React.ReactNode; className?: string }) => {
   const divRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
     const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Update CSS variables directly on the DOM element to avoid React re-renders
+    divRef.current.style.setProperty('--mouse-x', `${x}px`);
+    divRef.current.style.setProperty('--mouse-y', `${y}px`);
   };
-
-  const handleMouseEnter = () => setOpacity(1);
-  const handleMouseLeave = () => setOpacity(0);
 
   return (
     <div
       ref={divRef}
       onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className={`relative overflow-hidden rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 transition-all duration-300 ${className}`}
+      className={`relative overflow-hidden rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 transition-all duration-300 group/card ${className}`}
+      style={{
+        '--mouse-x': '0px',
+        '--mouse-y': '0px',
+      } as React.CSSProperties}
     >
       <div
-        className="pointer-events-none absolute -inset-px transition duration-300 z-0"
+        className="pointer-events-none absolute -inset-px transition duration-300 z-0 opacity-0 group-hover/card:opacity-100"
         style={{
-          opacity,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(124, 58, 237, 0.15), transparent 40%)`,
+          background: `radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(124, 58, 237, 0.15), transparent 40%)`,
         }}
       />
       <div className="relative z-10 h-full">
@@ -115,10 +116,12 @@ export const TechStack: React.FC = () => {
                 <div className="hidden lg:block w-20 h-1 bg-etalas-cyan dark:bg-etalas-teal rounded-full mb-10"></div>
 
                 {/* Vertical Category Menu for Desktop / Horizontal for Mobile */}
-                <div className="flex flex-row lg:flex-col flex-wrap gap-2 mb-8">
+                <div className="flex flex-row lg:flex-col flex-wrap gap-2 mb-8" role="tablist" aria-label="Technology Categories">
                   {Object.keys(technologies).map((category) => (
                     <button
                         key={category}
+                        role="tab"
+                        aria-selected={activeCategory === category}
                         onClick={() => {
                             setActiveCategory(category);
                             setSearchTerm('');
@@ -153,6 +156,7 @@ export const TechStack: React.FC = () => {
                   </div>
                   <input
                     type="text"
+                    aria-label="Search technologies"
                     className="block w-full pl-12 pr-10 py-4 border border-slate-200 dark:border-white/10 rounded-2xl leading-5 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-etalas-cyan focus:border-transparent transition-all shadow-sm"
                     placeholder={`Search ${activeCategory ? getDisplayName(activeCategory) + ' ' : ''}technology...`}
                     value={searchTerm}
@@ -168,9 +172,9 @@ export const TechStack: React.FC = () => {
                 {/* Grid */}
                 <div className="min-h-[400px]">
                   {filteredTechnologies.length > 0 ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" role="list">
                       {filteredTechnologies.map((tech, idx) => (
-                        <div key={`${tech}-${idx}`} className="animate-fade-in" style={{ animationDelay: `${idx * 30}ms` }}>
+                        <div key={`${tech}-${idx}`} role="listitem" className="animate-fade-in" style={{ animationDelay: `${idx * 30}ms` }}>
                           <Tooltip className="w-full block h-full" content={TOOLTIP_DATA[tech] || `${tech} - Expert developers available.`}>
                             <SpotlightCard className="h-32 w-full group cursor-default">
                                 <div className="absolute inset-0 flex items-center justify-center p-6">

@@ -40,7 +40,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onFinish }) => {
         
         <h1 className="text-3xl font-bold text-white tracking-tighter mb-2 overflow-hidden">
           <span className="inline-block animate-[fadeInUp_0.5s_ease-out_forwards]">etalas</span>
-          <span className="inline-block text-etalas-teal animate-[fadeInUp_0.5s_ease-out_0.2s_forwards]">.aug</span>
+          <span className="inline-block text-etalas-teal animate-[fadeInUp_0.5s_ease-out_0.2s_forwards]">.team</span>
         </h1>
         
         <div className="w-48 h-1 bg-white/10 rounded-full overflow-hidden mt-4">

@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
               <div className="w-8 h-8 bg-etalas-teal rounded flex items-center justify-center text-etalas-dark">
                  <Terminal size={18} />
               </div>
-              <span className="text-xl font-bold text-slate-900 dark:text-white">etalas<span className="text-etalas-teal">.aug</span></span>
+              <span className="text-xl font-bold text-slate-900 dark:text-white">etalas<span className="text-etalas-teal">.team</span></span>
             </div>
             
             <div className="space-y-4 mb-8">
@@ -67,7 +67,7 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-slate-900 dark:text-white font-bold mb-6">Services</h4>
             <ul className="space-y-3 text-slate-600 dark:text-etalas-white/60 text-sm">
-              <li><a href="#" className="hover:text-etalas-cyan dark:hover:text-etalas-teal hover:pl-2 transition-all">Staff Augmentation</a></li>
+              <li><a href="#" className="hover:text-etalas-cyan dark:hover:text-etalas-teal hover:pl-2 transition-all">Staff Outsourcing</a></li>
               <li><a href="#" className="hover:text-etalas-cyan dark:hover:text-etalas-teal hover:pl-2 transition-all">Dedicated Teams</a></li>
               <li><a href="#" className="hover:text-etalas-cyan dark:hover:text-etalas-teal hover:pl-2 transition-all">Software Outsourcing</a></li>
               <li><a href="#" className="hover:text-etalas-cyan dark:hover:text-etalas-teal hover:pl-2 transition-all">QA & Testing</a></li>

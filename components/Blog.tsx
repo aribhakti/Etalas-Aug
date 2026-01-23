@@ -7,7 +7,7 @@ import { ParallaxTitle } from './ParallaxTitle';
 const posts: BlogPost[] = [
   {
     id: 1,
-    title: "The Future of IT Staff Augmentation in 2025",
+    title: "The Future of IT Staff Outsourcing in 2025",
     excerpt: "How AI and remote-first cultures are reshaping the way enterprises build engineering teams.",
     date: "Oct 12, 2024",
     author: "Pandu Hartanto",
@@ -17,7 +17,7 @@ const posts: BlogPost[] = [
   {
     id: 2,
     title: "Remote vs In-House: A Cost Analysis",
-    excerpt: "Breaking down the TCO of hiring locally versus augmenting with global talent.",
+    excerpt: "Breaking down the TCO of hiring locally versus outsourcing to global talent.",
     date: "Oct 08, 2024",
     author: "Ari Bhakti",
     category: "Business Strategy",
@@ -180,7 +180,7 @@ export const Blog: React.FC = () => {
                   <p>In the rapidly evolving landscape of global technology, the traditional model of in-house team building is facing unprecedented challenges. Companies are no longer constrained by geography when searching for top-tier engineering talent.</p>
                   
                   <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-8 mb-4">The Shift to Distributed Teams</h3>
-                  <p>The rise of remote work has democratized access to high-quality software development. This article explores how modern enterprises are leveraging staff augmentation not just as a cost-saving measure, but as a strategic advantage to access niche skills (like AI and Blockchain) that are scarce in local markets.</p>
+                  <p>The rise of remote work has democratized access to high-quality software development. This article explores how modern enterprises are leveraging staff outsourcing not just as a cost-saving measure, but as a strategic advantage to access niche skills (like AI and Blockchain) that are scarce in local markets.</p>
                   
                   <blockquote className="border-l-4 border-etalas-cyan pl-6 py-2 my-8 italic text-slate-900 dark:text-white bg-slate-50 dark:bg-white/5 rounded-r-xl">
                     "The future of work isn't about where you are, but what you can deliver. Etalas bridges the gap between ambition and execution."

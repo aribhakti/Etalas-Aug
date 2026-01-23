@@ -20,7 +20,7 @@ export const Clients: React.FC = () => {
       </div>
       
       <div className="relative flex overflow-x-hidden group">
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-16">
+        <div className="animate-marquee whitespace-nowrap flex items-center gap-16 will-change-transform">
           {clients.concat(clients).map((client, idx) => (
             <span 
               key={idx} 
@@ -31,7 +31,7 @@ export const Clients: React.FC = () => {
           ))}
         </div>
         
-        <div className="absolute top-0 animate-marquee2 whitespace-nowrap flex items-center gap-16 ml-16">
+        <div className="absolute top-0 animate-marquee2 whitespace-nowrap flex items-center gap-16 ml-16 will-change-transform">
            {clients.concat(clients).map((client, idx) => (
             <span 
               key={`dup-${idx}`} 

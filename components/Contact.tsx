@@ -108,16 +108,19 @@ export const Contact: React.FC = () => {
           <div className="lg:col-span-7">
             <ScrollReveal delay={100}>
               <div className="bg-slate-50 dark:bg-white/5 p-8 rounded-3xl border border-slate-100 dark:border-white/5">
-                <form onSubmit={handleSubmit} className="space-y-5" aria-label="Contact Form">
+                <form onSubmit={handleSubmit} className="space-y-5" aria-label="Contact Form" noValidate>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                      <label htmlFor="name" className="text-sm font-semibold text-slate-900 dark:text-white">Full Name <span className="text-red-500">*</span></label>
+                      <label htmlFor="name" className="text-sm font-semibold text-slate-900 dark:text-white">Full Name <span className="text-red-500" aria-hidden="true">*</span></label>
                       <input 
                         id="name"
                         type="text" 
                         name="name"
                         value={formState.name}
                         onChange={handleChange}
+                        required
+                        aria-required="true"
+                        aria-invalid={status === 'error' && !formState.name}
                         className="w-full px-4 py-3 rounded-xl bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 focus:border-etalas-cyan focus:ring-2 focus:ring-etalas-cyan/20 outline-none transition-all dark:text-white"
                         placeholder="John Doe"
                       />
@@ -137,39 +140,45 @@ export const Contact: React.FC = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-semibold text-slate-900 dark:text-white">Work Email <span className="text-red-500">*</span></label>
+                    <label htmlFor="email" className="text-sm font-semibold text-slate-900 dark:text-white">Work Email <span className="text-red-500" aria-hidden="true">*</span></label>
                     <input 
                       id="email"
                       type="email" 
                       name="email"
                       value={formState.email}
                       onChange={handleChange}
+                      required
+                      aria-required="true"
+                      aria-invalid={status === 'error' && (!formState.email || !validateEmail(formState.email))}
                       className="w-full px-4 py-3 rounded-xl bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 focus:border-etalas-cyan focus:ring-2 focus:ring-etalas-cyan/20 outline-none transition-all dark:text-white"
                       placeholder="john@company.com"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-semibold text-slate-900 dark:text-white">Project Requirements <span className="text-red-500">*</span></label>
+                    <label htmlFor="message" className="text-sm font-semibold text-slate-900 dark:text-white">Project Requirements <span className="text-red-500" aria-hidden="true">*</span></label>
                     <textarea 
                       id="message"
                       name="message"
                       value={formState.message}
                       onChange={handleChange}
+                      required
+                      aria-required="true"
+                      aria-invalid={status === 'error' && !formState.message}
                       className="w-full px-4 py-3 rounded-xl bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 focus:border-etalas-cyan focus:ring-2 focus:ring-etalas-cyan/20 outline-none transition-all h-32 resize-none dark:text-white"
                       placeholder="Tell us about the roles you need..."
                     ></textarea>
                   </div>
 
                   {status === 'error' && (
-                    <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg flex items-center gap-2 animate-fade-in">
+                    <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg flex items-center gap-2 animate-fade-in" role="alert">
                       <AlertCircle size={16} />
                       {errorMessage}
                     </div>
                   )}
 
                   {status === 'success' ? (
-                    <div className="p-4 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 text-center rounded-xl font-bold animate-fade-in">
+                    <div className="p-4 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 text-center rounded-xl font-bold animate-fade-in" role="alert">
                       Message sent successfully! We will contact you shortly.
                     </div>
                   ) : (

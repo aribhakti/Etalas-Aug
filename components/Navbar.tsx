@@ -78,7 +78,7 @@ export const Navbar: React.FC = () => {
             <div className="w-10 h-10 bg-etalas-teal rounded-lg flex items-center justify-center text-etalas-dark font-bold group-hover:rotate-12 transition-transform duration-300">
                <Terminal size={24} />
             </div>
-            <span className="text-2xl font-bold tracking-tighter text-slate-900 dark:text-white">etalas<span className="text-etalas-teal">.aug</span></span>
+            <span className="text-2xl font-bold tracking-tighter text-slate-900 dark:text-white">etalas<span className="text-etalas-teal">.team</span></span>
           </div>
 
           <div className="hidden md:flex items-center gap-8">

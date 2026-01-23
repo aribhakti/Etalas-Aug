@@ -140,6 +140,7 @@ export const Hero: React.FC = () => {
                                 // Performance: Eager load LCP image
                                 loading="eager"
                                 decoding="async"
+                                fetchPriority="high"
                             />
                             <div>
                                 <h3 className="text-xl font-bold text-slate-900 dark:text-white">David Chen</h3>

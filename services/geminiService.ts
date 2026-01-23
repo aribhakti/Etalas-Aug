@@ -41,11 +41,11 @@ export const getTeamRecommendation = async (projectDescription: string): Promise
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: `I need to hire a remote team for this project: "${projectDescription}". 
-      Focus on staff augmentation. Suggest exact roles to hire, technologies, and a timeline for sourcing them.`,
+      Focus on staff outsourcing. Suggest exact roles to hire, technologies, and a timeline for sourcing them.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: recommendationSchema,
-        systemInstruction: "You are a Senior Talent Consultant for Etalas, a premium IT Staff Augmentation agency. Your goal is to recommend the perfect team composition of remote developers for a client. Focus on 'hiring' and 'staffing' rather than just 'building'. Be concise and professional."
+        systemInstruction: "You are a Senior Talent Consultant for Etalas, a premium IT Staff Outsourcing agency. Your goal is to recommend the perfect team composition of remote developers for a client. Focus on 'hiring' and 'staffing' rather than just 'building'. Be concise and professional."
       },
     });
 

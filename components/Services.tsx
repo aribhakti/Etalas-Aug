@@ -10,7 +10,7 @@ const services = [
     tags: ["Scalable", "Managed", "Long-term", "Agile"]
   },
   {
-    title: "Staff Augmentation",
+    title: "Staff Outsourcing",
     description: "Fill specific skill gaps quickly. Add a Senior React Dev or a DevOps Engineer to your existing team in less than 48 hours. Perfect for meeting tight deadlines.",
     tags: ["Speed", "Skill Gap", "Flexible", "On-demand"]
   },
@@ -73,6 +73,8 @@ export const Services: React.FC = () => {
                   <div className="group">
                     <button
                       onClick={() => toggleService(idx)}
+                      aria-expanded={openIndex === idx}
+                      aria-controls={`service-desc-${idx}`}
                       className="w-full py-8 flex items-center justify-between text-left focus:outline-none group"
                     >
                       <h3 className={`text-2xl md:text-3xl font-medium transition-colors duration-300 ${
@@ -90,6 +92,7 @@ export const Services: React.FC = () => {
                     </button>
                     
                     <div 
+                      id={`service-desc-${idx}`}
                       className={`overflow-hidden transition-all duration-500 ease-in-out ${
                         openIndex === idx ? 'max-h-96 opacity-100 mb-8' : 'max-h-0 opacity-0'
                       }`}

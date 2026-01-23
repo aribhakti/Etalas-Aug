@@ -6,10 +6,10 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     
     <!-- Primary Meta Tags -->
-    <title>Etalas | Premium IT Team Augmentation & Remote Staffing</title>
-    <meta name="title" content="Etalas | Premium IT Team Augmentation & Remote Staffing">
-    <meta name="description" content="Etalas connects enterprises with the top 1% of pre-vetted remote engineering talent. Scale your team in 48 hours with expert React, Node.js, and AI developers.">
-    <meta name="keywords" content="IT Staffing, Remote Developers, Staff Augmentation, React, Python, Node.js, AI, Offshore Development, Software Outsourcing">
+    <title>Etalas | Premium IT Team Outsourcing & Remote Staffing</title>
+    <meta name="title" content="Etalas | Premium IT Team Outsourcing & Remote Staffing">
+    <meta name="description" content="Scale your engineering team with top 1% global talent. Risk-free trial, timezone aligned, and 48h hiring speed. Book your consultation today.">
+    <meta name="keywords" content="IT Staffing, Remote Developers, Staff Outsourcing, React, Python, Node.js, AI, Offshore Development, Software Outsourcing">
     <meta name="author" content="Etalas">
     <meta name="theme-color" content="#0f172a" />
     <link rel="canonical" href="https://www.etalas.com/" />
@@ -17,14 +17,16 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.etalas.com/">
-    <meta property="og:title" content="Etalas | Premium IT Team Augmentation">
+    <meta property="og:title" content="Etalas | Premium IT Team Outsourcing">
     <meta property="og:description" content="Scale your engineering team with top 1% global talent. Risk-free trial, timezone aligned, and 48h hiring speed.">
     <meta property="og:image" content="https://www.etalas.com/og-image.jpg">
+    <meta property="og:site_name" content="Etalas">
+    <meta property="og:locale" content="en_US">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.etalas.com/">
-    <meta property="twitter:title" content="Etalas | Premium IT Team Augmentation">
+    <meta property="twitter:title" content="Etalas | Premium IT Team Outsourcing">
     <meta property="twitter:description" content="Scale your engineering team with top 1% global talent. Risk-free trial, timezone aligned, and 48h hiring speed.">
     <meta property="twitter:image" content="https://www.etalas.com/og-image.jpg">
 
@@ -42,21 +44,35 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Etalas",
-      "url": "https://www.etalas.com",
-      "logo": "https://www.etalas.com/logo.png",
-      "sameAs": [
-        "https://www.linkedin.com/company/etalas",
-        "https://www.instagram.com/etalas.id/"
-      ],
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+62-811-297-339",
-        "contactType": "sales",
-        "areaServed": ["US", "ID", "SG", "AU"],
-        "availableLanguage": ["English", "Indonesian"]
-      }
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Etalas",
+          "url": "https://www.etalas.com",
+          "logo": "https://www.etalas.com/logo.png",
+          "sameAs": [
+            "https://www.linkedin.com/company/etalas",
+            "https://www.instagram.com/etalas.id/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+62-811-297-339",
+            "contactType": "sales",
+            "areaServed": ["US", "ID", "SG", "AU"],
+            "availableLanguage": ["English", "Indonesian"]
+          }
+        },
+        {
+          "@type": "WebSite",
+          "name": "Etalas",
+          "url": "https://www.etalas.com",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.etalas.com/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
     }
     </script>
 
@@ -159,6 +175,14 @@
       }
       .preserve-3d {
         transform-style: preserve-3d;
+      }
+      
+      /* Performance optimizations */
+      .animate-blob {
+        will-change: transform;
+      }
+      .animate-marquee, .animate-marquee2 {
+        will-change: transform;
       }
       
       /* Custom Scrollbar */
