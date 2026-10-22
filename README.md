@@ -1,20 +1,33 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Etalas: IT Staff Outsourcing Landing Page
 
-# Run and deploy your AI Studio app
+Landing page for Etalas IT staff outsourcing and team augmentation, with features that use the Gemini API.
 
-This contains everything you need to run your app locally.
+## Tech stack
 
-View your app in AI Studio: https://ai.studio/apps/drive/1dRqvUFWUATBZX7hH7_H6k8JvRaJjkH_8
+- React and TypeScript
+- Vite
+- Google Gen AI SDK (`@google/genai`)
+- Lucide React for icons
 
-## Run Locally
+## Run locally
 
-**Prerequisites:**  Node.js
+```bash
+npm install
+npm run dev
+```
 
+If a feature calls the Gemini API, set your own API key in a local `.env.local` file. Never commit keys to the repository.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Other scripts: `npm run build`, `npm run preview`.
+
+## Structure
+
+```
+.
+├── components/   UI sections
+├── contexts/     shared state
+├── services/     API clients
+├── types.ts      TypeScript types
+├── App.tsx       page layout
+└── index.tsx     entry point
+```
